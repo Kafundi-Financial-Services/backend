@@ -37,7 +37,9 @@ database.connect = function connect() {
       // promiseLibrary: global.Promise,
     })
     .then(() => {
-      Logger.log("Successfully connected to system database");
+      Logger.log(
+				`Successfully connected to system database ${constants.database.url}`,
+			);
       database.isConnectedToDb = true;
     })
     .catch((err) => {
