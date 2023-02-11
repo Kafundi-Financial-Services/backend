@@ -35,6 +35,7 @@ database.connect = function connect() {
       connectTimeoutMS: 3000,
       // useFindAndModify: false,
       // promiseLibrary: global.Promise,
+      userMongoClient: true
     })
     .then(() => {
       Logger.log("Successfully connected to system database");
