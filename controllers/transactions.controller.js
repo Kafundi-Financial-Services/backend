@@ -12,7 +12,7 @@ exports.newTransaction = async function (req, res, next) {
 	// 	select: "username phone",
 	// });
   console.log(req.body, 'req.boy', req.user.id, "user")
-  const newT = {user: req.user.id, amount: Number(req.body.amount), profit: ((2/100) * Number(req.body.amount)) }
+  const newT = {user: req.user.id, amount: Number(req.body.amount), profit: ((2.5/100) * Number(req.body.amount)), transactionId : req.body.transactionId }
   
 
   let transaction = transactionService.create(newT)

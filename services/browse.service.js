@@ -35,7 +35,7 @@ module.exports.findCategories = async function findCategories(category, query) {
             : "descending",
         ],
       ])
-      // .populate(populate);  
+      .populate(populate);  
 
     const [data, total] = await Promise.all([
       modal.exec(),
@@ -92,7 +92,7 @@ module.exports.findCategories = async function findCategories(category, query) {
       return await GetData(Places);
     }
     case "transactions":
-      return await GetData(Transactions, [], ["userId"]);
+      return await GetData(Transactions, [], ["user"]);
 
     default: {
       return { data: [], total: 0 };
