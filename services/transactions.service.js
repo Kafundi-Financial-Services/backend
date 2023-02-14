@@ -33,8 +33,8 @@ const getOrder = async (orderData) => {
   const order = await Transactions.findOne(orderData);
   return order;
 };
-const create = async orderData => {
-	const transaction = await Transactions.create(orderData);
+const create = async (orderData, next) => {
+	const transaction = await Transactions.create(orderData).catch((err)=>{console.log(err); next(err)});
 	return transaction;
 };
 const deleteOrder = async (orderId) => {

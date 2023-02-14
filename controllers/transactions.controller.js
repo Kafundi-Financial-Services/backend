@@ -12,11 +12,15 @@ exports.newTransaction = async function (req, res, next) {
 	// 	select: "username phone",
 	// });
   console.log(req.body, 'req.boy', req.user.id, "user")
-  const newT = {user: req.user.id, amount: Number(req.body.amount), profit: ((2.5/100) * Number(req.body.amount)), transactionId : req.body.transactionId }
+  const newT = {user: req.user.id, amount: Number(req.body.amount), profit: Number(req.body.amount) > 40 ? ((2.5/100) * Number(req.body.amount)) : 1, transactionId : req.body.transactionId }
   
 
-  let transaction = transactionService.create(newT)
-	res.json(transaction);
+ try {
+   let transaction = transactionService.create(newT, next)
+ 	res.json(transaction);
+ } catch (error) {
+  next(error)
+ }
 };
 
 exports.getOrders = async function (req, res, next) {
