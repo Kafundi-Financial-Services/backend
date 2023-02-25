@@ -13,15 +13,23 @@ const {
   Places,
 } = require("../models");
 const Utils = require("../utils");
+const moment = require('moment');
+const mt = require("moment-timezone");
 
 module.exports.findCategories = async function findCategories(category, query) {
   const GetData = async function (Category, fields = [], populate = []) {
+    const today = moment().startOf("day");
+    const toDay = mt()
     // clean query, remove irrelevant props
     const q = xtend(query, {
-      offset: undefined,
-      limit: undefined,
-      sorter: undefined,
-    });
+			offset: undefined,
+			limit: undefined,
+			sorter: undefined,
+			createdAt: {
+				$gte: today.toDate(),
+				$lte: moment(today).endOf("day").toDate(),
+			},
+		});
 
     const modal = Category.find(Utils.cleanObject(q))
       .skip(query.offset)

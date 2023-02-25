@@ -34,8 +34,13 @@ const getOrder = async (orderData) => {
   return order;
 };
 const create = async (orderData, next) => {
-	const transaction = await Transactions.create(orderData).catch((err)=>{console.log(err); next(err)});
-	return transaction;
+  try{
+    const transaction = await Transactions.create(orderData);
+		return transaction;
+  }catch(err){
+   throw new Error(err)
+  }
+	
 };
 const deleteOrder = async (orderId) => {
   const order = await Transactions.findByIdAndRemove(orderId);
@@ -52,7 +57,7 @@ const approveOrder = async (orderId) => {
   const order = await Transactions.findByIdAndUpdate(orderId, {
     status: "SUCCESS",
   });
-  console.log(order, "wwwwwwwwwwwwwwwwwwwwwwww");
+  // console.log(order, "wwwwwwwwwwwwwwwwwwwwwwww");
 
   await Notify.create({
     user: order.userId,

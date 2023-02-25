@@ -17,8 +17,11 @@ exports.newTransaction = async function (req, res, next) {
 
  try {
    let transaction = transactionService.create(newT, next)
+   console.log(transaction, 'transaction')
  	res.json(transaction);
  } catch (error) {
+
+  console.log(error, 'this is error')
   next(error)
  }
 };

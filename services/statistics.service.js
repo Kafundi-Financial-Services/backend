@@ -1,4 +1,9 @@
 const { User, Transactions, Collections } = require("../models");
+const moment = require("moment");
+
+    const today = moment().startOf("day");
+
+
 
 exports.monthly = async function (query) {
 	let users = await User.countPerMonth(query);
@@ -17,8 +22,16 @@ exports.all = async function (query) {
 	//   { $group: { _id: "$status", cost: { $sum: "$cost" } } },
 	// ]);
 	let totalTransactions = await Transactions.aggregate([
-		{ $match: { status: "SUCCESS" } },
-		{ $group: { _id: {status: "$status"}, amount: { $sum: "$amount" } } },
+		{
+			$match: {
+				status: "SUCCESS",
+				createdAt: {
+					$gte: today.toDate(),
+					$lte: moment(today).endOf("day").toDate(),
+				},
+			},
+		},
+		{ $group: { _id: { status: "$status" }, amount: { $sum: "$amount" } } },
 	]);
 	let profit = await Transactions.aggregate([
 		{ $match: { status: "SUCCESS" } },
