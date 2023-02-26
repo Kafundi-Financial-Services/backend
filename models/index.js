@@ -8,6 +8,7 @@ exports.Driver = require("./drivers");
 exports.Places = require("./places");
 exports.Notify = require("./notify");
 exports.Transactions = require("./transactions");
+exports.Expenses = require("./expenses");
 exports.Collections = require("./collections");
 exports.Banners = require("./banners");
 exports.Items = require("./items");

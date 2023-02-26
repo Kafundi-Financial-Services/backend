@@ -3,30 +3,24 @@ const statPlugin = require("./statistics.plugin");
 const dailyStatPlugin = require("./dailyStats.plugin")
 
 
-let transactionSchema = mongoose.Schema(
+let expenseSchema = mongoose.Schema(
   {
-    // userId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "User",
-    //   required: true,
-    // },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Staff",
       required: true,
     },
-    transactionId: {type: String, required: true, unique: true},
+    expense: {type: String, required: true},
     amount: { type: Number, required: true },
-    status: { type: String, default: "PENDING" },
-    profit: { type: Number, required: true}
   },
   { timestamps: true }
 );
 
-transactionSchema.plugin(statPlugin);
-transactionSchema.plugin(dailyStatPlugin);
+expenseSchema.plugin(statPlugin);
+expenseSchema.plugin(dailyStatPlugin);
 
-// transactionSchema.post("save", async function (doc) {
+
+// expenseSchema.post("save", async function (doc) {
 //   console.log(doc);
 
 //   let user = await this.model("User").findById(doc.userId);
@@ -43,7 +37,7 @@ transactionSchema.plugin(dailyStatPlugin);
  
 // });
 
-// transactionSchema.post("findOneAndUpdate", async function (doc) {
+// expenseSchema.post("findOneAndUpdate", async function (doc) {
 //   console.log("middleware");
 //   console.log(doc);
 
@@ -80,4 +74,4 @@ transactionSchema.plugin(dailyStatPlugin);
 //   // );
 // });
 
-module.exports = mongoose.model("orders", transactionSchema);
+module.exports = mongoose.model("expenses", expenseSchema);

@@ -3,6 +3,7 @@ exports.browseController = require("./browse.controller");
 exports.searchController = require("./search.controller");
 exports.staffController = require("./staff.controller");
 exports.transactionsController = require("./transactions.controller");
+exports.expensesController = require("./expenses.controller");
 exports.deliveryController = require("./delivery.controller");
 exports.driversController = require("./drivers.controller");
 exports.statsController = require("./statistics.controller");

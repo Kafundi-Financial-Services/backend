@@ -7,6 +7,7 @@ exports.attachmentService = require("./attachment.service");
 exports.googleDriveService = require("./google-drive.service");
 exports.driverService = require("./drivers.service");
 exports.transactionService = require("./transactions.service.js")
+exports.expenseService = require("./expenses.service.js");
 exports.userService = require("./users.service");
 exports.placesService = require("./places.service");
 exports.gfsService = require("./gfs.service");

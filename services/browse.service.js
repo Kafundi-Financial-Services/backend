@@ -9,17 +9,18 @@ const {
   Items,
   Delivery,
   Cafe,
+  Expenses,
   Banners,
   Places,
 } = require("../models");
 const Utils = require("../utils");
 const moment = require('moment');
-const mt = require("moment-timezone");
+
 
 module.exports.findCategories = async function findCategories(category, query) {
   const GetData = async function (Category, fields = [], populate = []) {
     const today = moment().startOf("day");
-    const toDay = mt()
+   
     // clean query, remove irrelevant props
     const q = xtend(query, {
 			offset: undefined,
@@ -54,58 +55,19 @@ module.exports.findCategories = async function findCategories(category, query) {
   };
 
   switch (category) {
-    case "staff": {
-      return await GetData(Staff);
-    }
+		case "staff": {
+			return await GetData(Staff);
+		}
+		case "transactions":
+			return await GetData(Transactions, [], ["user"]);
 
-    case "attachments": {
-      return await GetData(Attachment);
-    }
+		case "expenses":
+			return await GetData(Expenses, [], ["user"]);
 
-    case "banners": {
-      return await GetData(Banners);
-    }
-
-    case "items": {
-      return await GetData(Items);
-    }
-
-    case "records": {
-      return await GetData(Record);
-    }
-
-    case "orders": {
-      let [moving, delivery] = await Promise.all([
-        GetData(Transactions, [], ["user"]),
-        GetData(Delivery, [], ["user"]),
-      ]);
-      console.log(moving, delivery);
-      const allOrders = moving.data.concat(delivery.data);
-      return { data: allOrders, total: moving.total + delivery.total };
-    }
-
-    case "movingOrders":
-      return await GetData(Transactions, [], ["user"]);
-
-    case "deliveryOrders":
-      return await GetData(Delivery, [], ["user"]);
-
-    case "users": {
-      return await GetData(User);
-    }
-    case "drivers": {
-      return await GetData(Driver);
-    }
-    case "places": {
-      return await GetData(Places);
-    }
-    case "transactions":
-      return await GetData(Transactions, [], ["user"]);
-
-    default: {
-      return { data: [], total: 0 };
-    }
-  }
+		default: {
+			return { data: [], total: 0 };
+		}
+	}
 };
 
 module.exports.findCategory = async function findCategories(params) {
