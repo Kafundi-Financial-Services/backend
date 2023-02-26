@@ -110,17 +110,22 @@ exports.all = async function (query) {
 			},
 		]);
 
-	// const dailyTransactions = await Transactions.aggregate([
-	// 	{
-	// 		$match: {
-	// 			createdAt: {
-	// 				$gte: today.toDate(),
-	// 				$lte: moment(today).endOf("day").toDate(),
-	// 			},
-	// 		},
-	// 	},
-	// 	// { $group: { _id: { status: "$status" }, profit: { $sum: "$profit" } } },
-	// ]);
+		if(dailyExpenses.length < 1){
+			dailyExpenses.push({ amount: 0})
+		}
+
+		if (monthlyExpenses.length < 1) {
+			monthlyExpenses.push({ amount: 0 });
+		}
+
+		if (dailyTransactions.length < 1) {
+			dailyTransactions.push({ amount: 0 });
+		}
+
+		if (monthlyTransactions.length < 1) {
+			monthlyTransactions.push({ amount: 0 });
+		}
+	
 
 	return { users, transactions, collections, totalTransactions, profit, dailyExpenses, monthlyExpenses, monthlyTransactions, dailyTransactions };
 };
