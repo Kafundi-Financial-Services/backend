@@ -1,10 +1,9 @@
 const Transactions = require("../models/transactions");
-const UserModel = require("../models/user");
-const NotifyModel = require("../models/notify");
-const DeliveryOrderModel = require("../models/delivery");
-const notify = require("../models/notify");
 const { transactionService } = require("../services");
-const io = require("../utils/socket");
+const AppError = require("../utils/AppError");
+const httpStatus = require("http-status");
+
+
 
 exports.newTransaction = async function (req, res, next) {
 	// let orders = await Transactions.find(req.query).populate({
@@ -16,13 +15,17 @@ exports.newTransaction = async function (req, res, next) {
   
 
  try {
-   let transaction = transactionService.create(newT, next)
+   let transaction = transactionService.create(newT)
    console.log(transaction, 'transaction')
  	res.json(transaction);
  } catch (error) {
 
   console.log(error, 'this is error')
-  next(error)
+  next(
+      new AppError(
+        "Session expired! Please log out, then log in again!",
+        httpStatus.UNAUTHORIZED
+      ))
  }
 };
 

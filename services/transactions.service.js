@@ -1,5 +1,9 @@
 const { Notify, Transactions, Delivery } = require("../models");
+const AppError = require("../utils/AppError");
+
 const authService = require("./auth.service");
+const httpStatus = require("http-status");
+
 const io = require("../utils/socket");
 
 /**
@@ -34,12 +38,18 @@ const getOrder = async (orderData) => {
   return order;
 };
 const create = async (orderData, next) => {
-  try{
-    const transaction = await Transactions.create(orderData);
-		return transaction;
-  }catch(err){
-   throw new Error(err)
-  }
+  const transaction = await Transactions.create(orderData);
+	return transaction;
+  // try{
+  //   const transaction = await Transactions.create(orderData);
+	// 	return transaction;
+  // }catch(err){
+  //  return next(
+  //     new AppError(
+  //       "Session expired! Please log out, then log in again!",
+  //       httpStatus.UNAUTHORIZED
+  //     ))
+  // }
 	
 };
 const deleteOrder = async (orderId) => {

@@ -10,6 +10,7 @@ const attachmentRoute = require("./attachment.route");
 const meRoute = require("./me.route");
 const transactions = require("./transactions");
 const expenses = require("./expenses");
+const browseQuery = require('./browse.query')
 
 const router = express.Router();
 // router.use(catchAsync(authMiddleware.authenticate));
@@ -21,5 +22,6 @@ router.use("/browse", browseRoute);
 router.use("/statistics", statsRoute);
 router.use("/transactions", transactions);
 router.use("/expenses", expenses);
+router.use("/browsequery", browseQuery);
 
 module.exports = router;

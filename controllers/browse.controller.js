@@ -4,6 +4,7 @@ const httpStatus = require("http-status");
 
 exports.getCategories = async (req, res, next) => {
   console.log(req.params.category, "categories");
+  console.log(req.query, "am the query")
   const categories = await browseService.findCategories(
     req.params.category,
     req.query
@@ -15,6 +16,23 @@ exports.getCategories = async (req, res, next) => {
     limit: req.query.limit,
     total: categories.total,
   });
+};
+
+
+exports.getCategoriesQuery = async (req, res, next) => {
+	console.log(req.params.category, "categories");
+	console.log(req.query, "am the query");
+	const categories = await browseService.findCategoriesQuery(
+		req.params.category,
+		req.query,
+	);
+
+	res.status(200).json({
+		items: categories.data,
+		offset: req.query.offset,
+		limit: req.query.limit,
+		total: categories.total,
+	});
 };
 
 exports.getCategory = async (req, res, next) => {

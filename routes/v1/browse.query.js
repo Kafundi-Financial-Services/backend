@@ -7,17 +7,8 @@ const router = express.Router({ mergeParams: true });
 
 router.route("/:category").get(
   // validate(browseValidation.getCategories),
-  catchAsync(browseController.getCategories)
+  catchAsync(browseController.getCategoriesQuery)
 );
 
-router.route("/:category/:id").get(
-  // validate(browseValidation.getCategory),
-  catchAsync(browseController.getCategory)
-);
-
-router.route("/:category/:startDate/:endDate").get(
-	// validate(browseValidation.getCategory),
-	catchAsync(browseController.getCategory),
-);
 
 module.exports = router;

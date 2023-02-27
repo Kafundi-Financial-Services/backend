@@ -10,7 +10,7 @@ const authMiddleware = require("../../middlewares/auth");
 router
   .route("/:id")
   .delete(expensesController.deleteOrder)
-  .patch(expensesController.confirmOrder);
+  // .patch(expensesController.confirmOrder);
 
   router.route("/").post(catchAsync(authMiddleware.authenticate),expensesController.newTransaction);
 
