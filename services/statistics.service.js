@@ -63,6 +63,28 @@ exports.all = async function (query) {
 			},
 		},
 	]);
+
+	const monthlyProfits = await Transactions.aggregate([
+		{
+			$match: {
+				createdAt: {
+					$gte: startOfMonth,
+					$lte: endOfMonth,
+				},
+				status: "SUCCESS",
+			},
+		},
+		{
+			$group: {
+				_id: {
+					month: {
+						$month: "$createdAt",
+					},
+				},
+				profit: { $sum: "$profit" },
+			},
+		},
+	]);
 	
 	const monthlyTransactions = await Transactions.aggregate([
 		{
@@ -110,22 +132,47 @@ exports.all = async function (query) {
 			},
 		]);
 
-		if(dailyExpenses.length < 1){
-			dailyExpenses.push({ amount: 0})
-		}
+		const dailyProfits = await Transactions.aggregate([
+			{
+				$match: {
+					createdAt: {
+						$gte: today.toDate(),
+						$lte: moment(today).endOf("day").toDate(),
+					},
+					status: "SUCCESS",
+				},
+			},
+			{
+				$group: {
+					_id: {
+						day: {
+							$dayOfWeek: "$createdAt",
+						},
+					},
+					profit: { $sum: "$profit" },
+				},
+			},
+		]);
+		
+				if(dailyExpenses.length < 1){
+					dailyExpenses.push({ amount: 0})
+				}
+		
+				if (monthlyExpenses.length < 1) {
+					monthlyExpenses.push({ amount: 0 });
+				}
+		
+				if (dailyTransactions.length < 1) {
+					dailyTransactions.push({ amount: 0 });
+				}
+		
+				if (monthlyTransactions.length < 1) {
+					monthlyTransactions.push({ amount: 0 });
+				}
 
-		if (monthlyExpenses.length < 1) {
-			monthlyExpenses.push({ amount: 0 });
-		}
-
-		if (dailyTransactions.length < 1) {
-			dailyTransactions.push({ amount: 0 });
-		}
-
-		if (monthlyTransactions.length < 1) {
-			monthlyTransactions.push({ amount: 0 });
-		}
+		dailyProfits[0].profit -= dailyExpenses[0].amount
+		monthlyProfits[0].profit -= monthlyExpenses[0].amount
 	
 
-	return { users, transactions, collections, totalTransactions, profit, dailyExpenses, monthlyExpenses, monthlyTransactions, dailyTransactions };
+	return { users, transactions, collections, totalTransactions, profit, dailyExpenses, monthlyProfits,monthlyExpenses, monthlyTransactions, dailyTransactions, dailyProfits };
 };
