@@ -2,16 +2,16 @@ const xtend = require("xtend");
 const {
   Record,
   Staff,
-  Attachment,
+
   Transactions,
-  Driver,
-  User,
+ 
   Items,
-  Delivery,
-  Cafe,
+
   Expenses,
-  Banners,
-  Places,
+
+  Debts,
+  TempCash
+
 } = require("../models");
 const Utils = require("../utils");
 const moment = require('moment');
@@ -79,6 +79,10 @@ module.exports.findCategories = async function findCategories(category, query) {
 
 		case "expenses":
 			return await GetData(Expenses, [], ["user"]);
+		case "debts":
+			return await GetData(Debts, [], ["user"]);
+		case "tempcash":
+			return await GetData(TempCash, [], ["user"]);
 
 		default: {
 			return { data: [], total: 0 };
@@ -134,7 +138,10 @@ module.exports.findCategoriesQuery = async function findCategories(category, que
 
 		case "expenses":
 			return await GetData(Expenses, [], ["user"]);
-
+		case "debts":
+			return await GetData(Debts, [], ["user"]);
+		case "tempcash":
+			return await GetData(TempCash, [], ["user"]);
 		default: {
 			return { data: [], total: 0 };
 		}

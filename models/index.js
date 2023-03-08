@@ -1,14 +1,9 @@
 exports.Staff = require("./staff");
-exports.Attachment = require("./attachment");
-exports.Record = require("./record");
-// exports.Order = require("./movingorder");
-exports.Delivery = require("./delivery");
 exports.User = require("./user");
-exports.Driver = require("./drivers");
-exports.Places = require("./places");
-exports.Notify = require("./notify");
 exports.Transactions = require("./transactions");
 exports.Expenses = require("./expenses");
-exports.Collections = require("./collections");
-exports.Banners = require("./banners");
-exports.Items = require("./items");
+exports.TotalAmount = require('./totalAmount')
+exports.TempCash = require('./tempoCash')
+exports.Debts = require('./debts')
+exports.Calculations = require('./calculations')
+

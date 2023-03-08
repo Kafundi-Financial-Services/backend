@@ -1,13 +1,15 @@
-const { Notify, Transactions, Delivery } = require("../models");
-const AppError = require("../utils/AppError");
+const { Calculations, TotalAmount } = require("../models");
+const { getDebtsTotal } = require("./debts.service");
+const { getRefundedCash, getTempCash } = require("./tempcash.service");
+const xtend = require('xtend')
 
-const authService = require("./auth.service");
-const httpStatus = require("http-status");
 
-const io = require("../utils/socket");
+
+
+
 
 /**
- * A method that gets the Transactions By its ID
+ * A method that gets the TotalAmount By its ID
  *
  * @function
  * @author Koodeyo
@@ -18,7 +20,7 @@ const io = require("../utils/socket");
  */
 
 const getOrderById = async (orderId) => {
-  const order = await Transactions.findById(orderId);
+  const order = await TotalAmount.findById(orderId);
   return order;
 };
 
@@ -34,17 +36,51 @@ const getOrderById = async (orderId) => {
  * @returns {Document} `order` with the given `orderData`
  */
 const getOrder = async (orderData) => {
-  const order = await Transactions.findOne(orderData);
+  const order = await TotalAmount.findOne(orderData);
   return order;
 };
-const create = async (orderData, next) => {
-  const transaction = await Transactions.create(orderData);
-	return transaction;
+
+/*
+ * 
+ * @param {
+  mtn: 5000,
+  airtel: 5000,
+  bunya: 5000,
+  cash: 5000,
+  user: '63fcbc89cc0b6885f7c5c207'
+} orderData 
+ * @returns 
+ */
+
+const create = async (orderData) => {
+  console.log(orderData, 'cals');
+
+  const tempcash = await getTempCash()
+  const debts = await getDebtsTotal()
+
+  console.log(debts, 'am debt')
+
+  const calValues = await TotalAmount.create(xtend(orderData, {tempcash, debts}))
+  
+  .then(({_doc})=>{
+    let {tempcash, debts, mtn, airtel, cash, bunya} = _doc
+
+    let result = tempcash + mtn + airtel + cash + bunya
+
+    console.log(result, 'this is my result')
+    return xtend(_doc, {result})
+
+  })
+  
+
+  console.log(calValues, 'cal values')
+  
+  return calValues
 
 	
 };
 const deleteOrder = async (orderId) => {
-  const order = await Transactions.findByIdAndRemove(orderId);
+  const order = await TotalAmount.findByIdAndRemove(orderId);
   return order;
 };
 
@@ -55,7 +91,7 @@ const deleteDeliveryOrder = async (orderId) => {
 
 const approveOrder = async (orderId) => {
 
-  const order = await Transactions.findByIdAndUpdate(orderId, {
+  const order = await TotalAmount.findByIdAndUpdate(orderId, {
     status: "SUCCESS",
   });
   // console.log(order, "wwwwwwwwwwwwwwwwwwwwwwww");

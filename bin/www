@@ -8,11 +8,7 @@ var app = require("../app");
 var http = require("http");
 var database = require("../database");
 var Logger = require("../logger");
-const socket = require("../utils/socket");
-const jwt = require("jsonwebtoken");
-const { SECRET_KEY } = require("../constants");
-const uuid = require("uuid");
-const Notify = require("../models/notify");
+
 // const Orders = require("../models/orders");
 
 /**

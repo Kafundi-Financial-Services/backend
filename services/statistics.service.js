@@ -1,4 +1,4 @@
-const { User, Transactions, Collections, Expenses } = require("../models");
+const { User, Transactions, Expenses } = require("../models");
 const moment = require("moment");
 
     const today = moment().startOf("day");
@@ -10,16 +10,15 @@ const moment = require("moment");
 exports.monthly = async function (query) {
 	const users = await User.countPerMonth(query);
 	const transactions = await Transactions.countPerMonth(query);
-	const collections = await Collections.countPerMonth(query);
 	const dailyTransactions = await Transactions.countPerDay(query)
 
-	return { users, transactions, collections, dailyTransactions };
+	return { users, transactions, dailyTransactions };
 };
 
 exports.all = async function (query) {
 	const users = await User.countDocuments(query);
 	const transactions = await Transactions.countDocuments(query);
-	const collections = await Collections.count({ status: "successful" });
+
 	
 	// const totalCollections = await Collections.aggregate([
 	//   { $match: { status: "successful" } },
@@ -38,10 +37,10 @@ exports.all = async function (query) {
 		{ $group: { _id: { status: "$status" }, amount: { $sum: "$amount" } } },
 	]);
 
-	const profit = await Transactions.aggregate([
-		{ $match: { status: "SUCCESS" } },
-		{ $group: { _id: { status: "$status" }, profit: { $sum: "$profit" } } },
-	]);
+	// const profit = await Transactions.aggregate([
+	// 	{ $match: { status: "SUCCESS" } },
+	// 	{ $group: { _id: { status: "$status" }, profit: { $sum: "$profit" } } },
+	// ]);
 	
 	const monthlyExpenses = await Expenses.aggregate([
 		{
@@ -169,10 +168,19 @@ exports.all = async function (query) {
 				if (monthlyTransactions.length < 1) {
 					monthlyTransactions.push({ amount: 0 });
 				}
+				if (dailyProfits.length < 1) {
+					dailyProfits.push({ profit: 0 });
+				}
+
+				if (monthlyProfits.length < 1) {
+					monthlyProfits.push({ profit: 0 });
+				}
+
+
 
 		dailyProfits[0].profit -= dailyExpenses[0].amount
 		monthlyProfits[0].profit -= monthlyExpenses[0].amount
 	
 
-	return { users, transactions, collections, totalTransactions, profit, dailyExpenses, monthlyProfits,monthlyExpenses, monthlyTransactions, dailyTransactions, dailyProfits };
+	return { users, transactions, totalTransactions, dailyExpenses, monthlyProfits,monthlyExpenses, monthlyTransactions, dailyTransactions, dailyProfits };
 };
