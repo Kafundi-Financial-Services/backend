@@ -58,8 +58,35 @@ const getDebtsTotal = async () => {
 	return 0;
 };
 
+const getPaidDebts = async () => {
+	const debts = await Debts.aggregate([
+		{
+			$match: {
+				status: "SUCCESS",
+			},
+		},
+		{
+			$group: {
+				_id: {
+					year: {
+						$year: "$createdAt",
+					},
+				},
+				debts: { $sum: "$amount" },
+			},
+		},
+	]);
+
+	if (debts.length) return debts[0].debts;
+
+	return 0;
+};
+
+
+
 
 module.exports = {
+  getPaidDebts,
   deleteDebt,
   getDebtsTotal,
   deleteDeliveryDebt,

@@ -1,5 +1,5 @@
 const { Calculations, TotalAmount } = require("../models");
-const { getDebtsTotal } = require("./debts.service");
+const { getDebtsTotal, getPaidDebts } = require("./debts.service");
 const { getRefundedCash, getTempCash } = require("./tempcash.service");
 const xtend = require('xtend')
 
@@ -57,6 +57,7 @@ const create = async (orderData) => {
 
   const tempcash = await getTempCash()
   const debts = await getDebtsTotal()
+  const paidDebts = await getPaidDebts()
 
   console.log(debts, 'am debt')
 
@@ -65,7 +66,7 @@ const create = async (orderData) => {
   .then(({_doc})=>{
     let {tempcash, debts, mtn, airtel, cash, bunya} = _doc
 
-    let result = tempcash + mtn + airtel + cash + bunya
+    let result = tempcash + mtn + airtel + cash + bunya + paidDebts
 
     console.log(result, 'this is my result')
     return xtend(_doc, {result})
