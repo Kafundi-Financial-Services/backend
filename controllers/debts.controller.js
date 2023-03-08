@@ -11,16 +11,16 @@ exports.create = async function (req, res, next) {
 
 };
 
-exports.deleteOrder = async function (req, res, next) {
+exports.deleteDebt = async function (req, res, next) {
 	let order = await debtService.deleteOrder(req.params.id);
 	res.json(order);
 };
 
-exports.confirmOrder = async function (req, res, next) {
+exports.approveDebt = async function (req, res, next) {
 	// io.emit("test", { data: "hi" });
 	console.log("starting to confirm, order controller");
 
-	const order = await debtService.approveOrder(req.params.id);
+	const order = await debtService.approveDebt(req.params.id);
 	console.log("service done, order controller");
 
 	res.json({

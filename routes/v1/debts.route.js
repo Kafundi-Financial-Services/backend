@@ -6,8 +6,8 @@ const authMiddleware = require("../../middlewares/auth");
 
 router
 	.route("/:id")
-	.delete(debtsController.deleteOrder)
-	.patch(debtsController.confirmOrder);
+	.delete(debtsController.deleteDebt)
+	.patch(debtsController.approveDebt);
 
 router
 	.route("/")
