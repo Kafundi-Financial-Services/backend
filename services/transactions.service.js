@@ -58,25 +58,6 @@ const approveOrder = async (orderId) => {
   const order = await Transactions.findByIdAndUpdate(orderId, {
     status: "SUCCESS",
   });
-  // console.log(order, "wwwwwwwwwwwwwwwwwwwwwwww");
-
-  await Notify.create({
-    user: order.userId,
-    order: order._id,
-    status: "SUCCESS",
-  })
-    .then((doc) => {
-      io.getIO().emit("test", {
-        order: order._id,
-        user: order.user,
-        status: doc.status,
-        confirmedAt: doc.confirmedAt,
-      });
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-
   return order;
 };
 
