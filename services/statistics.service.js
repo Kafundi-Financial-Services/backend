@@ -5,6 +5,12 @@ const moment = require("moment");
 	const startOfMonth = moment().startOf('month').toDate();
 	const endOfMonth = moment().endOf('month').toDate()
 
+	console.log(today.toDate(), moment(today.toDate()).format('MMMM Do, h:mm a') ,'>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..day')
+	console.log(
+		moment(today).endOf("day").toDate(),
+		moment(moment(today).endOf("day").toDate()).format("MMMM Do, h:mm a"),
+		">>>>>>>>>>>>>>>>>>>>>>>>>>>",
+	);
 
 
 exports.monthly = async function (query) {

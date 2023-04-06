@@ -3,7 +3,7 @@ module.exports = Object.freeze({
     url:
       process.env.MONGO_DB ||
       // "mongodb://geophrey:thugs123legitcluster.v2vwa.mongodb.net/cafe?ssl=false&retryWrites=true&w=majority",
-      "mongodb://localhost/kfs",
+      "mongodb://localhost/kfs3",
       // "mongodb://172.17.0.2:27017/kf",
       
     connectRetry: 5,
