@@ -24,15 +24,7 @@ module.exports.findCategories = async function findCategories(category, query) {
 		fields = [],
 		populate = []
 	) {
-
-		let {startDate, endDate} = query
-
-
-		
-
 		// clean query, remove irrelevant props
-
-		
 		const q = xtend(query, {
 			offset: undefined,
 			limit: undefined,
@@ -43,11 +35,6 @@ module.exports.findCategories = async function findCategories(category, query) {
 			},
 		});
 		
-
-		
-
-    
-
 		const modal = Category.find(Utils.cleanObject(q))
 			.skip(query.offset)
 			.limit(query.limit)
@@ -91,9 +78,9 @@ module.exports.findCategories = async function findCategories(category, query) {
 };
 
 module.exports.findCategoriesQuery = async function findCategories(category, query) {
-	const today = moment().startOf("day");
+	
 	const GetData = async function (Category, fields = [], populate = []) {
-		let { startDate, endDate } = query;
+
 
 		// clean query, remove irrelevant props
 
@@ -103,7 +90,7 @@ module.exports.findCategoriesQuery = async function findCategories(category, que
 			sorter: undefined,
 			createdAt: {
 				$gte: moment(query.startDate),
-				$lte: moment(query.endDate),
+				$lte: moment(query.endDate).endOf("day").toDate(),
 			},
 		});
 
@@ -153,7 +140,7 @@ module.exports.findCategory = async function findCategories(params) {
   console.log(params);
   const GetData = async function (Category) {
     const category = await Category.find({ category: params.id });
-    console.log(category, "dhhdhdddh");
+    // console.log(category, "dhhdhdddh");
     return category;
   };
 

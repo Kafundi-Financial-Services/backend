@@ -116,6 +116,8 @@ exports.all = async function (query) {
 		},
 		{ $group: { _id: { status: "$status" }, amount: { $sum: "$amount" } } },
 	]);
+
+	console.log(dailyTransactions, 'daily>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 		const dailyExpenses = await Expenses.aggregate([
 			{
 				$match: {
